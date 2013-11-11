@@ -65,19 +65,22 @@ static void display(void)
   glClearColor(0.3, 0.3, 0.8, 0.);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  /* draw a smooth-shaded torus */
+/*   draw a smooth-shaded torus 
   glPushMatrix();
-//gluLookAt (0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
+  gluLookAt (0.0, 0.0, 5.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
   glRotatef( 2.0, 1., 0., 1.);
   glEnable(GL_LIGHTING);
 //glutSolidTorus(0.3, 0.6, 30, 30);
+  glEnable(GL_LINE_STIPPLE);
+  glLineStipple(1, 0x087F);
+  gl2psEnable(GL2PS_LINE_STIPPLE);
  glBegin(GL_LINE_STRIP);                      // Drawing Using Triangles
-    for(i=1;i<04;i++){
+    for(i=1;i<50;i++){
         fscanf(fp,"%lf %lf %lf\n",&x,&y,&z);
         printf("%lf %lf %lf\n",x,y,z);
-        glVertex3f( 1.f*x, 1.f*y, 1.f*z);              // Bottom Right
+        glVertex3f(-0.75 + 1.5 * (double)i/(double)(N-1), -.75, -0.9);
     }
-glEnd(); 
+glEnd(); */
   glutWireCube (1.0);
   glDisable(GL_LIGHTING);
   glPopMatrix();
@@ -91,8 +94,21 @@ glEnd();
   glLineStipple(1, 0x087F);
   gl2psEnable(GL2PS_LINE_STIPPLE);
   glBegin(GL_LINE_STRIP);
+  for(i = 0; i < 9; i++){
+        fscanf(fp,"%lf %lf %lf\n",&z,&x,&y);
+        printf("%lf %lf %lf\n",x,y,z);
+    glVertex3f(-0.75 + 1.5 * x/(double)(N - 1), -0.75 + 1.5*y/(double)N, -0.1);
+  }
+  glEnd();
+  glDisable(GL_LINE_STIPPLE);
+  gl2psDisable(GL2PS_LINE_STIPPLE);
+
+  glEnable(GL_LINE_STIPPLE);
+  glLineStipple(1, 0x087F);
+  gl2psEnable(GL2PS_LINE_STIPPLE);
+  glBegin(GL_LINE_STRIP);
   for(i = 0; i < N; i++)
-    glVertex3f(-0.75 + 1.5 * (double)i/(double)(N - 1), 0.75, -0.9);
+    glVertex3f(-0.75 + 1.5 * (double)i/(double)(N - 1),  0.75, -0.1);
   glEnd();
   glDisable(GL_LINE_STIPPLE);
   gl2psDisable(GL2PS_LINE_STIPPLE);
