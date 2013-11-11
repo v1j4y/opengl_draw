@@ -54,7 +54,7 @@ static void display(void)
 {
   unsigned int i;
   unsigned int N = 50;
-  const char *help = "Press 's' to save image or 'q' to quit";
+  const char *help = "2D PlotOYXPress 's' to save image or 'q' to quit";
     GLdouble y; 
     GLdouble x;
     GLdouble z;
@@ -62,7 +62,8 @@ static void display(void)
 
     fp=fopen("S0.dat","r");
 
-  glClearColor(0.3, 0.3, 0.8, 0.);
+//glClearColor(0.3, 0.3, 0.8, 0.);
+  glClearColor(1.0, 1.0, 1.0, 0.);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 /*   draw a smooth-shaded torus 
@@ -81,15 +82,16 @@ static void display(void)
         glVertex3f(-0.75 + 1.5 * (double)i/(double)(N-1), -.75, -0.9);
     }
 glEnd(); */
-  glutWireCube (1.0);
+  glutWireCube (1.5);
   glDisable(GL_LIGHTING);
   glPopMatrix();
 
-  glColor3f(1.,1.,1.);
+  glColor3f(1.,0.,0.);
 
   /* draw a stippled line with many small segments (this tests the
      ability of gl2ps to render lines using as few strokes as
      possible) */
+  /*
   glEnable(GL_LINE_STIPPLE);
   glLineStipple(1, 0x087F);
   gl2psEnable(GL2PS_LINE_STIPPLE);
@@ -102,21 +104,66 @@ glEnd(); */
   glEnd();
   glDisable(GL_LINE_STIPPLE);
   gl2psDisable(GL2PS_LINE_STIPPLE);
+  */
+//glEnable(GL_LINE_STIPPLE);
+//glLineStipple(1, 0x087F);
+//gl2psEnable(GL2PS_LINE_STIPPLE);
+  glBegin(GL_LINE_STRIP);
+  for(i = 0; i < 8; i++){
+    fscanf(fp,"%lf %lf \n",&x,&y);
+    printf("%lf %lf \n",x,y);
+    glVertex3f(x/(double)(10), y/(double)(10), -0.0);
+  }
+  glEnd();
+  glDisable(GL_LINE_STIPPLE);
+  gl2psDisable(GL2PS_LINE_STIPPLE);
+
+  glColor3f(0.,0.,0.);
 
   glEnable(GL_LINE_STIPPLE);
   glLineStipple(1, 0x087F);
   gl2psEnable(GL2PS_LINE_STIPPLE);
   glBegin(GL_LINE_STRIP);
   for(i = 0; i < N; i++)
-    glVertex3f(-0.75 + 1.5 * (double)i/(double)(N - 1),  0.75, -0.1);
+    glVertex3f(0.00, 0.75 - 1.5 * (double)i/(double)(N - 1), -0.1);
+  glEnd();
+  glDisable(GL_LINE_STIPPLE);
+  gl2psDisable(GL2PS_LINE_STIPPLE);
+
+  glEnable(GL_LINE_STIPPLE);
+  glLineStipple(1, 0x087F);
+  gl2psEnable(GL2PS_LINE_STIPPLE);
+  glBegin(GL_LINE_STRIP);
+  for(i = 0; i < N; i++)
+    glVertex3f(-0.75 + 1.5 * (double)i/(double)(N - 1),  0.00, -0.1);
   glEnd();
   glDisable(GL_LINE_STIPPLE);
   gl2psDisable(GL2PS_LINE_STIPPLE);
 
   /* draw a text string */
-  glRasterPos2d(-0.9,-0.9);
+  glRasterPos2d(-0.05, 0.95);
   gl2psText(help, "Times-Roman", 24);
-  for (i = 0; i < strlen(help); i++)
+  for (i = 0; i < 6; i++)
+    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[i]);
+
+  glRasterPos2d(-0.05,-0.05);
+  gl2psText(help, "Times-Roman", 24);
+  glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[7]);
+//glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, origin[7]);
+
+  glRasterPos2d(-0.00, 0.78);
+  gl2psText(help, "Times-Roman", 24);
+//glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, yaxis[8]);
+  glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[8]);
+
+  glRasterPos2d( 0.80,-0.00);
+  gl2psText(help, "Times-Roman", 24);
+//glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, xaxis[9]);
+  glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[9]);
+
+  glRasterPos2d(-0.5,-0.9);
+  gl2psText(help, "Times-Roman", 24);
+  for (i = 10; i < strlen(help); i++)
     glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[i]);
 
   glFlush();
@@ -137,7 +184,7 @@ static void keyboard(unsigned char key, int x, int y)
     printf("Writing 'out.eps'... ");
     while(state == GL2PS_OVERFLOW){
       buffsize += 1024*1024;
-      gl2psBeginPage("test", "gl2psTestSimple", NULL, GL2PS_PDF, GL2PS_SIMPLE_SORT,
+      gl2psBeginPage("test", "gl2psTestSimple", NULL, GL2PS_EPS, GL2PS_SIMPLE_SORT,
                      GL2PS_DRAW_BACKGROUND | GL2PS_USE_CURRENT_VIEWPORT,
                      GL_RGBA, 0, NULL, 0, 0, 0, buffsize, fp, "out.eps");
       display();
