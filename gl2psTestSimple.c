@@ -54,7 +54,10 @@ static void display(void)
 {
   unsigned int i;
   unsigned int N = 50;
-  const char *help = "2D PlotOYXPress 's' to save image or 'q' to quit";
+  const char *head = "2D Plot";
+  const char *origin ="O";
+  const char *yaxis = "Y";
+  const char *xaxis = "X";
     GLdouble y; 
     GLdouble x;
     GLdouble z;
@@ -142,29 +145,32 @@ glEnd(); */
 
   /* draw a text string */
   glRasterPos2d(-0.05, 0.95);
-  gl2psText(help, "Times-Roman", 24);
-  for (i = 0; i < 6; i++)
-    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[i]);
+  gl2psText(head, "Times-Roman", 24);
+  for (i = 0; i < strlen(head); i++){
+    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, head[i]);
+  }
 
   glRasterPos2d(-0.05,-0.05);
-  gl2psText(help, "Times-Roman", 24);
-  glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[7]);
-//glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, origin[7]);
+  gl2psText(origin, "Times-Roman", 24);
+//glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[7]);
+  glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, origin[0]);
 
   glRasterPos2d(-0.00, 0.78);
-  gl2psText(help, "Times-Roman", 24);
-//glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, yaxis[8]);
-  glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[8]);
+  gl2psText(yaxis, "Times-Roman", 24);
+  glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, yaxis[0]);
+//glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[8]);
+
+//glRasterPos2d(-0.5,-0.9);
+//gl2psText(help, "Times-Roman", 24);
+//for (i = 10; i < strlen(help); i++){
+//  gl2psText(&help[i], "Times-Roman", 24);
+//  glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[i]);
+//}
 
   glRasterPos2d( 0.80,-0.00);
-  gl2psText(help, "Times-Roman", 24);
-//glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, xaxis[9]);
-  glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[9]);
-
-  glRasterPos2d(-0.5,-0.9);
-  gl2psText(help, "Times-Roman", 24);
-  for (i = 10; i < strlen(help); i++)
-    glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[i]);
+  gl2psText(xaxis, "Times-Roman", 24);
+  glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, xaxis[0]);
+//glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, help[9]);
 
   glFlush();
 }
